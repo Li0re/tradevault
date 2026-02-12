@@ -25,7 +25,7 @@
   --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
   --radius:14px;--radius-sm:10px;--radius-xs:7px;
 }
-body{background:var(--bg);font-family:var(--font);color:var(--text);min-height:100vh;padding-top:70px;overflow-x:hidden}
+body{background:var(--bg);font-family:var(--font);color:var(--text);min-height:100vh;padding-top:110px;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::selection{background:var(--green-mid);color:var(--text)}
@@ -170,6 +170,24 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
 .tip{position:relative}.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(.9);background:var(--bg4);color:var(--text);padding:6px 12px;border-radius:var(--radius-xs);font-size:10px;font-family:var(--font);font-weight:500;white-space:nowrap;opacity:0;pointer-events:none;transition:all .2s;border:1px solid var(--border);z-index:50}
 .tip:hover::after{opacity:1;transform:translateX(-50%) scale(1)}
 
+/* ═══ ACCOUNT SWITCHER ═══ */
+.acct-bar{display:flex;align-items:center;gap:6px;padding:10px 28px;background:var(--bg2)ee;backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:fixed;top:66px;left:0;right:0;z-index:99;justify-content:center}
+.acct-bar-inner{max-width:1240px;width:100%;display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none}
+.acct-bar-inner::-webkit-scrollbar{display:none}
+.acct-bar-label{font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1.4px;text-transform:uppercase;flex-shrink:0;margin-right:4px}
+.acct-pill{padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text2);transition:all .25s;white-space:nowrap;font-family:var(--font);display:flex;align-items:center;gap:6px}
+.acct-pill:hover{border-color:var(--border2);transform:translateY(-1px)}
+.acct-pill.active{background:var(--green);color:var(--bg);border-color:var(--green);box-shadow:0 2px 12px var(--green-mid)}
+.acct-pill .acct-pnl{font-family:var(--mono);font-size:10px;opacity:.8}
+.acct-add{padding:6px 14px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;border:1px dashed var(--border);background:transparent;color:var(--text3);transition:all .25s;flex-shrink:0}
+.acct-add:hover{border-color:var(--green-mid);color:var(--green)}
+.acct-modal{position:fixed;inset:0;z-index:300;background:rgba(5,7,9,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
+.acct-modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:90%;max-width:420px;animation:scaleIn .3s ease}
+.acct-modal-box h3{font-size:16px;font-weight:800;margin-bottom:16px}
+.acct-color-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.acct-color{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s}
+.acct-color:hover{transform:scale(1.15)}.acct-color.active{border-color:var(--text);transform:scale(1.15)}
+
 /* ═══ LOGIN SCREEN ═══ */
 .login-screen{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:32px;transition:opacity .5s,transform .5s}
 .login-screen.hidden{opacity:0;pointer-events:none;transform:scale(1.05)}
@@ -196,7 +214,8 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:680px){
-  .topbar-inner{flex-direction:column;gap:8px}.topbar{height:auto;padding:12px 16px}body{padding-top:120px}
+  .topbar-inner{flex-direction:column;gap:8px}.topbar{height:auto;padding:12px 16px}body{padding-top:160px}
+  .acct-bar{top:auto;position:relative;padding:8px 14px}
   .form-grid{grid-template-columns:1fr 1fr}.stat-row{flex-direction:column}
   .app{padding:12px 14px 50px}.row2>div{min-width:100%}
   .tabs button{padding:7px 12px;font-size:11px}
@@ -258,6 +277,14 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
   </div>
 </div>
 
+<!-- ═══ ACCOUNT BAR ═══ -->
+<div class="acct-bar" id="acct-bar" style="display:none">
+  <div class="acct-bar-inner" id="acct-bar-inner"></div>
+</div>
+
+<!-- ═══ ACCOUNT MODAL ═══ -->
+<div class="acct-modal" id="acct-modal" style="display:none"></div>
+
 <div class="app" id="app"></div>
 
 <script>
@@ -287,12 +314,24 @@ const DEMO=[
   {id:17,date:"2026-02-10",market:"forex",pair:"GBP/JPY",direction:"long",entry:192.40,exit:193.85,size:20000,pnl:190,fees:3.20,confidence:4,notes:"Tendance forte, pullback sur EMA 20.",tags:["trend","ema"]},
 ];
 
+const ACCT_COLORS=["#00e29a","#38d6f4","#9580ff","#ffb340","#ff4466","#f472b6","#4ade80","#facc15"];
+const ACCT_ICONS=["💰","📊","🏦","🎯","⚡","🔥","💎","🚀"];
+
 let S={
-  trades:JSON.parse(JSON.stringify(DEMO)),
-  view:"dashboard",filter:"all",editId:null,deleteId:null,nextId:18,capital:10000,
+  accounts:[],  // [{id,name,color,icon,capital,trades:[],nextId}]
+  activeAcct:null, // account id
+  view:"dashboard",filter:"all",editId:null,deleteId:null,
   f:{date:ti(),market:"crypto",pair:"BTC/USDT",direction:"long",entry:"",exit:"",size:"",pnl:"",fees:"",confidence:3,notes:"",tags:""},
-  calYear:new Date().getFullYear(),calMonth:new Date().getMonth()
+  calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),
+  modal:null // null | 'create' | 'edit' | 'delete'
 };
+
+// Helper to get current account
+function CA(){return S.accounts.find(a=>a.id===S.activeAcct)||null}
+// Helper to get current trades
+Object.defineProperty(S,'trades',{get(){const a=CA();return a?a.trades:[]},set(v){const a=CA();if(a)a.trades=v}});
+Object.defineProperty(S,'nextId',{get(){const a=CA();return a?a.nextId:1},set(v){const a=CA();if(a)a.nextId=v}});
+Object.defineProperty(S,'capital',{get(){const a=CA();return a?a.capital:10000},set(v){const a=CA();if(a)a.capital=v}});
 
 function ti(){return new Date().toISOString().slice(0,10)}
 const fmt=n=>n>=0?"+"+n.toFixed(2):n.toFixed(2);
@@ -338,12 +377,14 @@ function doLogout() {
 auth.onAuthStateChanged(async user => {
   const loginEl = document.getElementById("login-screen");
   const userEl = document.getElementById("user-info");
+  const acctBar = document.getElementById("acct-bar");
   if (user) {
     currentUser = user;
     userDocRef = db.collection("users").doc(user.uid);
     document.getElementById("user-avatar").src = user.photoURL || "";
     document.getElementById("user-avatar").title = user.displayName || user.email;
     userEl.style.display = "flex";
+    acctBar.style.display = "flex";
     loginEl.classList.add("hidden");
     await loadFromFirestore();
     R();
@@ -351,6 +392,7 @@ auth.onAuthStateChanged(async user => {
     currentUser = null;
     userDocRef = null;
     userEl.style.display = "none";
+    acctBar.style.display = "none";
     loginEl.classList.remove("hidden");
   }
 });
@@ -372,9 +414,8 @@ async function saveToFirestore() {
   saveTimeout = setTimeout(async () => {
     try {
       await userDocRef.set({
-        trades: S.trades,
-        nextId: S.nextId,
-        capital: S.capital,
+        accounts: S.accounts,
+        activeAcct: S.activeAcct,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
       showSync("saved", "☁️ ✓");
@@ -391,14 +432,22 @@ async function loadFromFirestore() {
     const doc = await userDocRef.get();
     if (doc.exists) {
       const d = doc.data();
-      S.trades = d.trades || DEMO;
-      S.nextId = d.nextId || (S.trades.length + 1);
-      S.capital = d.capital || 10000;
-    } else {
-      // Premier login: seed avec les données de démo
-      S.trades = JSON.parse(JSON.stringify(DEMO));
-      S.nextId = DEMO.length + 1;
-      S.capital = 10000;
+      S.accounts = d.accounts || [];
+      S.activeAcct = d.activeAcct || (S.accounts.length ? S.accounts[0].id : null);
+    }
+    if (!S.accounts.length) {
+      // Premier login: creer un compte demo
+      const demoAcct = {
+        id: 'acct_' + Date.now(),
+        name: 'Compte Demo',
+        color: ACCT_COLORS[0],
+        icon: ACCT_ICONS[0],
+        capital: 10000,
+        nextId: DEMO.length + 1,
+        trades: JSON.parse(JSON.stringify(DEMO))
+      };
+      S.accounts = [demoAcct];
+      S.activeAcct = demoAcct.id;
       await saveToFirestore();
     }
   } catch (e) {
@@ -408,6 +457,118 @@ async function loadFromFirestore() {
 }
 
 function persist() { saveToFirestore(); }
+
+/* ═══ ACCOUNT MANAGEMENT ═══ */
+function switchAcct(id) {
+  S.activeAcct = id;
+  S.filter = "all";
+  S.editId = null;
+  S.deleteId = null;
+  persist();
+  R();
+}
+
+function showAcctModal(type, acctId) {
+  S.modal = type;
+  S._editAcctId = acctId || null;
+  renderModal();
+}
+
+function closeModal() {
+  S.modal = null;
+  S._editAcctId = null;
+  document.getElementById("acct-modal").style.display = "none";
+}
+
+function renderModal() {
+  const modal = document.getElementById("acct-modal");
+  if (!S.modal) { modal.style.display = "none"; return; }
+  modal.style.display = "flex";
+
+  if (S.modal === 'create' || S.modal === 'edit') {
+    const isEdit = S.modal === 'edit';
+    const acct = isEdit ? S.accounts.find(a => a.id === S._editAcctId) : null;
+    const name = acct ? acct.name : '';
+    const capital = acct ? acct.capital : 10000;
+    const color = acct ? acct.color : ACCT_COLORS[S.accounts.length % ACCT_COLORS.length];
+    const icon = acct ? acct.icon : ACCT_ICONS[S.accounts.length % ACCT_ICONS.length];
+
+    modal.innerHTML = `<div class="acct-modal-box anim-scale">
+      <h3>${isEdit ? '✏️ Modifier le compte' : '➕ Nouveau compte'}</h3>
+      <div class="form-group" style="margin-bottom:14px"><label>Nom du compte</label><input type="text" id="acct-name" value="${name}" placeholder="Ex: Prop Firm FTMO, Compte Demo..." style="width:100%"></div>
+      <div class="form-group" style="margin-bottom:14px"><label>Capital initial (€)</label><input type="number" id="acct-capital" value="${capital}" style="width:120px"></div>
+      <div class="form-group" style="margin-bottom:14px"><label>Icone</label><div class="acct-color-picker" id="icon-picker">${ACCT_ICONS.map(ic => `<div class="acct-color ${ic === icon ? 'active' : ''}" onclick="pickIcon(this,'${ic}')" style="background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;border-color:${ic === icon ? 'var(--text)' : 'var(--border)'}">${ic}</div>`).join('')}</div></div>
+      <div class="form-group" style="margin-bottom:18px"><label>Couleur</label><div class="acct-color-picker" id="color-picker">${ACCT_COLORS.map(c => `<div class="acct-color ${c === color ? 'active' : ''}" onclick="pickColor(this,'${c}')" style="background:${c};border-color:${c === color ? 'var(--text)' : 'transparent'}"></div>`).join('')}</div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="saveAcct(${isEdit ? "'" + S._editAcctId + "'" : 'null'})">${isEdit ? 'Sauvegarder' : 'Creer le compte'}</button>
+        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+        ${isEdit && S.accounts.length > 1 ? `<button class="btn btn-danger" onclick="showAcctModal('delete','${S._editAcctId}')" style="margin-left:auto">Supprimer</button>` : ''}
+      </div>
+    </div>`;
+  } else if (S.modal === 'delete') {
+    const acct = S.accounts.find(a => a.id === S._editAcctId);
+    modal.innerHTML = `<div class="acct-modal-box anim-scale">
+      <h3>🗑 Supprimer "${acct ? acct.name : ''}" ?</h3>
+      <p style="color:var(--text2);font-size:13px;margin:12px 0 20px;line-height:1.6">Tous les trades de ce compte seront supprimés définitivement. Cette action est irréversible.</p>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-danger" onclick="deleteAcct('${S._editAcctId}')">Oui, supprimer</button>
+        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+      </div>
+    </div>`;
+  }
+}
+
+let _pickedColor = null, _pickedIcon = null;
+function pickColor(el, c) {
+  _pickedColor = c;
+  document.querySelectorAll('#color-picker .acct-color').forEach(e => { e.classList.remove('active'); e.style.borderColor = 'transparent'; });
+  el.classList.add('active'); el.style.borderColor = 'var(--text)';
+}
+function pickIcon(el, ic) {
+  _pickedIcon = ic;
+  document.querySelectorAll('#icon-picker .acct-color').forEach(e => { e.classList.remove('active'); e.style.borderColor = 'var(--border)'; });
+  el.classList.add('active'); el.style.borderColor = 'var(--text)';
+}
+
+function saveAcct(editId) {
+  const name = document.getElementById('acct-name').value.trim();
+  if (!name) return;
+  const capital = parseFloat(document.getElementById('acct-capital').value) || 10000;
+  const color = _pickedColor || ACCT_COLORS[S.accounts.length % ACCT_COLORS.length];
+  const icon = _pickedIcon || ACCT_ICONS[S.accounts.length % ACCT_ICONS.length];
+
+  if (editId) {
+    S.accounts = S.accounts.map(a => a.id === editId ? { ...a, name, capital, color, icon } : a);
+  } else {
+    const newAcct = { id: 'acct_' + Date.now(), name, color, icon, capital, nextId: 1, trades: [] };
+    S.accounts.push(newAcct);
+    S.activeAcct = newAcct.id;
+  }
+  _pickedColor = null; _pickedIcon = null;
+  persist(); closeModal(); R();
+}
+
+function deleteAcct(id) {
+  S.accounts = S.accounts.filter(a => a.id !== id);
+  if (S.activeAcct === id) S.activeAcct = S.accounts.length ? S.accounts[0].id : null;
+  persist(); closeModal(); R();
+}
+
+function renderAcctBar() {
+  const bar = document.getElementById("acct-bar-inner");
+  if (!bar || !currentUser) return;
+  let h = '<span class="acct-bar-label">Compte</span>';
+  S.accounts.forEach(a => {
+    const st = getStats(a.trades);
+    const isActive = a.id === S.activeAcct;
+    h += `<button class="acct-pill ${isActive ? 'active' : ''}" onclick="switchAcct('${a.id}')" ondblclick="showAcctModal('edit','${a.id}')" title="Double-clic pour modifier" style="${isActive ? `background:${a.color};border-color:${a.color};box-shadow:0 2px 12px ${a.color}40` : `border-color:${a.color}40`}">
+      <span>${a.icon} ${a.name}</span>
+      <span class="acct-pnl" style="color:${isActive ? 'inherit' : (st.netPnl >= 0 ? 'var(--green)' : 'var(--red)')}">${a.trades.length ? fC(st.netPnl) + '€' : '—'}</span>
+    </button>`;
+  });
+  h += `<button class="acct-add" onclick="showAcctModal('create')" title="Nouveau compte">+</button>`;
+  bar.innerHTML = h;
+}
 
 /* ═══ TAB SLIDER ═══ */
 function updateSlider(){
@@ -444,8 +605,16 @@ function getDailyPnl(trades){
 /* ═══ RENDER ═══ */
 function R(){
   if(!currentUser)return;
-  dC();const tr=S.trades,st=getStats(tr);
-  document.getElementById("hdr-sub").textContent=`${tr.length} trades · P&L: ${fC(st.netPnl)}€`;
+  dC();
+  renderAcctBar();
+  const acct=CA();
+  if(!acct){
+    document.getElementById("hdr-sub").textContent="Aucun compte";
+    document.getElementById("app").innerHTML=`<div class="empty anim-scale"><div class="empty-icon">📂</div><p>Créez votre premier compte pour commencer.</p><button class="btn btn-primary" onclick="showAcctModal('create')">+ Nouveau compte</button></div>`;
+    return;
+  }
+  const tr=S.trades,st=getStats(tr);
+  document.getElementById("hdr-sub").textContent=`${acct.icon} ${acct.name} · ${tr.length} trades · ${fC(st.netPnl)}€`;
   const app=document.getElementById("app");
   if(S.view==="dashboard")app.innerHTML=rDash();
   else if(S.view==="log")app.innerHTML=rLog();
